@@ -1,0 +1,68 @@
+<%- include("../views/template/head.ejs", {tituloWeb: 'Detalle de Mascota'}); %>
+    
+    <div class="container">
+        <h1>Detalle Mascota</h1>
+        <% if (error) { %>
+            <p>
+                <%= mensaje %> 
+            </p>
+            <a href="/mascotas" class="btn btn-dark btn-block">Volver a Mascotas</a>
+        <% } %>
+        <% if (!error) { %>
+            <form id="formularioEditar" data-id="<%= mascota.id %>">
+                <input type="text" name="nombre" id="nombreinput" class="form-control my-2" value="<%= mascota.nombre %>">
+                <input type="text" name="desc" id="descinput" class="form-control my-2" value="<%= mascota.desc %>">
+                <button class="btn btn-warning btn-block">Editar</button>
+            </form>
+            <hr>
+            <button class="btn btn-danger btn-sm mt-5" id="btnEliminar" data-id="<%= mascota.id %>">Eliminar</button>
+        <% } %>
+    </div>
+
+<%- include('../views/template/footer.ejs'); %>
+<script>
+    const btnEliminar = document.querySelector('#btnEliminar');
+    btnEliminar.addEventListener('click', async() => {
+        console.log('Diste Click');
+        const id = btnEliminar.dataset.id;
+        console.log('id', id);
+        try {
+            const data = await fetch(`/mascotas/${id}`, {
+                method: 'delete'
+            });
+            const res = await data.json();
+            if (res.estado) {
+                window.location.href = '/mascotas'
+            } else {
+                console.log(res);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    });
+    const formularioEditar = document.querySelector('#formularioEditar');
+    formularioEditar.addEventListener('submit', async(e) => {
+        e.preventDefault();
+        // console.log('Submit');
+        const nombre = formularioEditar.elements['nombre'].value;
+        const desc = document.querySelector('#descinput').value;
+        const id = formularioEditar.dataset.id
+        // console.log(nombre, desc, id);
+        try {
+            const data = await fetch(`/mascotas/${id}`, {
+                method: 'put',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({nombre, desc})
+            });
+            const res = await data.json();
+            if (res.estado) {
+                window.location.href = '/mascotas'
+            } else {
+                console.log(res);
+            }
+            console.log(res);
+        } catch (error) {
+            console.log(error)
+        }
+    });
+</script>

@@ -1,0 +1,21 @@
+<%- include("../views/template/head.ejs", {tituloWeb: 'Crear Nueva Mascota'}); %>
+    
+    <div class="container">
+        <h1>Crear</h1>
+        <form action="/mascotas" method="post">
+            <input 
+            type="text" name="nombre" id="" placeholder="Agregar Nombre" class="form-control my-2"
+            >
+            <input 
+            type="text" name="desc" id="" placeholder="Agregar Desc" class="form-control my-2"
+            >
+            <button
+                class="btn btn-success btn-block"
+                type="submit"
+            >
+                Agregar
+            </button>
+        </form>
+    </div>
+
+<%- include('../views/template/footer.ejs'); %>
